@@ -1,43 +1,5 @@
 # Amani React Native SDK Documentation
-
-## Overview
-
-The Amani Software Development kit (SDK) provides you with complete steps to perform KYC. This SDK consists of 5 steps:
-
-## **1. Upload Your Identification:**
-
-This internally consists of 4 types of documents, you can upload any of them to get your identification verified. These documents are
-
-1. Turkish ID Card(New): There you can upload your new Turkish ID card.
-2. Turkish ID Card(Old): There you can upload your old Turkish ID card.
-3. Turkish Driver License: There you can upload your old Turkish driver's license.
-4. Passport: You can also upload your passport to get verification of your identity.
-
-## **2. Upload your selfie:**
-
-This step includes taking a selfie and uploading it.
-
-## **3. Upload Your Proof of Address:**
-
-There we have 4 types of categories you can upload any of them to get your address verified.
-
-1. Proof of Address: you will upload simply proof of address there.
-2. ISKI: you will upload ISKI address proof there.
-3. IGDAS: There you have the option of IGDAS.
-4. CK Bogazici Elektrik: You have to upload the same here.
-
-## **4. Sign Digital Contract:**
-
-In this step, you will enter the information required to make a digital contract. Then you will get your contract in the same step from our side. Then by reading that contract, you have to sign that and then at the end upload the same.
-
-## **5. Upload Physical Contract:**
-
-In this step, you will download your physical contract. Then you have to upload the same contract by filling the all the information to get your physical contract verified.
-
-## **Congratulation Screen:**
-
-After successfully uploading all the documents you will see a congratulation screen saying you completed all the steps. We will check your documents and increase your limit in 48 hours.
-
+This documentation shows how to bridge our native SDK’s to react native.
 # Setting up & Installation
 
 To get you started, we’ll need some changes on the default react native boilerplate in the Android folder.
@@ -128,7 +90,7 @@ private final ReactNativeHost mReactNativeHost =
 Lastly, you have to remove this piece of code if it exists on your `MainActivity.java` file.
 
 ```java
-/**
+**/**
    * Returns the instance of the {@link ReactActivityDelegate}. There the RootView is created and
    * you can specify the renderer you wish to use - the new renderer (Fabric) or the old renderer
    * (Paper).
@@ -143,7 +105,7 @@ Now you’re ready to use our SDK with React Native on Android. Congratulations!
 
 # Usage
 
-Import AmaniSDKModule as shown below, this way you can start to use our sdk.
+Import AmaniSDKModule as shown below, this way you can start to use our SDK.
 
 ```jsx
 import { NativeModules } from'react-native';
@@ -154,7 +116,7 @@ You can start the SDK as shown below.
 
 ### How to acquire token
 
-On the server-side, you need to log in with your credentials and get a token for next steps. This token should be used only on server-side requests not used on SDK itself.
+On the server-side, you need to log in with your credentials and get a token for the next steps. This token should be used only on server-side requests not used on SDK itself.
 
 ```bash
 curl --location --request POST 'https://tr.amani.ai/api/v1/user/login/' \
@@ -177,26 +139,26 @@ curl --location --request POST 'https://tr.amani.ai/api/v1/customer' \
 ****
 ```
 
-| Param Number | Param Name | Param Type |
-| --- | --- | --- |
-| 1 | server | string |
-| 2 | id | string |
-| 3 | token | string |
-| 6 | lang | string |
-| 7 | callback function | (callbackData) ⇒ void |
-
 ```jsx
 AmaniSDKModule.startAmaniSDKWithToken("server", "TCN ID", "token", "tr", (callBack)=>{
 
     // 0. element of callBack returns boolean value of tokenExpired 
-    if (Object.values(callBack)[1]) CustomModule.showMessage("Token is expired");
+    if (Object.values(callBack)[1]) AmaniSDKModule.showMessage("Token is expired");
 
     // 1. element of callBack returns boolean value of verificationCompleted 
-    if (Object.values(callBack)[0]) CustomModule.showMessage("Verification is completed");  
+    if (Object.values(callBack)[0]) AmaniSDKModule.showMessage("Verification is completed");  
     else CustomModule.showMessage("Verification is NOT completed");  
     
     // 2. element of callBack returns Integer value of an ApiExcetion if exist.  
-    if (Object.values(callBack)[2] != null) CustomModule.showMessage("Api Exception" + Object.values(callBack)[2]); 
+    if (Object.values(callBack)[2] != null) AmaniSDKModule.showMessage("Api Exception" + Object.values(callBack)[2]); 
     
   });
 ```
+
+| Param Number | Param Name | Param Type |
+| --- | --- | --- |
+| 1 | server | string |
+| 2 | TCN ID | string |
+| 3 | token | string |
+| 6 | lang | string |
+| 7 | callback function | (callbackData) ⇒ void |
