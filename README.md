@@ -23,7 +23,7 @@ android {
 ```bash
 dependencies {
 // ...
-		implementation 'ai.amani.android:AmaniAi:1.2.50'
+		implementation 'ai.amani.android:AmaniAi:1.2.41'
 // ...
 }
 ```

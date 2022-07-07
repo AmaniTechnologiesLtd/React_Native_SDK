@@ -52,7 +52,7 @@ public class CustomAmaniModule extends ReactContextBaseJavaModule {
     public void startAmaniSDKWithToken(String server, String id, String token, String lang, Callback callBack){
         eventListener(callBack);
         Amani.init(reactApplicationContext, server);
-        Amani.goToKycActivity(reactApplicationContext.getCurrentActivity(), id, token, lang)
+        Amani.goToKycActivity(reactApplicationContext.getCurrentActivity(), id, token, lang);
     }
 
     @NonNull
