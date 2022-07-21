@@ -14,9 +14,8 @@ Pod::Spec.new do |s|
 
   s.platforms    = { :ios => "10.0" }
   s.source       = { :git => "http://github.com/AmaniTechnologiesLtd/React_Native_SDK/amani-react-native-sdk.git", :tag => "#{s.version}" }
-
   s.source_files = "ios/**/*.{h,m,mm,swift}"
-
+  s.swift_version = '5.0'
   s.dependency "React-Core"
   s.dependency "Amani"
 
