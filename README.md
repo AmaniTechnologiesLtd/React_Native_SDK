@@ -140,8 +140,12 @@ dataBinding { enabled true  }
 #### For IOS Devices
 Since our SDK is an dynamic framework you have to update your `Podfile` for dynamic frameworks. 
 
-First you must add `use_frameworks!` directive.
+First you must add `use_frameworks!` directive and our native platform sdk as a pod.
 
+```rb
+use_frameworks!
+pod 'Amani', :git => 'https://github.com/AmaniTechnologiesLtd/Public-IOS-SDK.git'
+```
 After the last end, you must add our preinstall hook.
 ```rb
 dynamic_frameworks = ['Amani','IQKeyboardManagerSwift','lottie-ios']
