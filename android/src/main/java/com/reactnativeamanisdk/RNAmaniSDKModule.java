@@ -2,7 +2,6 @@ package com.reactnativeamanisdk;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresPermission;
@@ -53,14 +52,6 @@ public class RNAmaniSDKModule extends ReactContextBaseJavaModule implements Acti
         return NAME;
     }
 
-    // @ReactMethod
-    // public void startAmaniSDKWithToken(ReadableMap args, Callback callback) {
-    //   // fires the callback from the onActivityResult
-    //   eventListener(callback);
-    //   Amani.init(rnAppContext, args.getString("server"));
-    //   Amani.goToKycActivity(rnAppContext.getCurrentActivity(), args.getString("id"), args.getString("token"), args.getString("lang"));
-    // }
-
     @ReactMethod
     public void startAmaniSDKWithToken(ReadableMap args, Callback callback) {
       String birthDate = null;
@@ -102,17 +93,64 @@ public class RNAmaniSDKModule extends ReactContextBaseJavaModule implements Acti
 
       Amani.init(rnAppContext, args.getString("server"));
 
-      Log.d("RNAMANISDK", args.toString());
       eventListener(callback);
       if (email != null && phone != null && name != null) {
-        Log.d("RNAMANISDK", "email phone name not null");
         Amani.goToKycActivity(rnAppContext.getCurrentActivity(), args.getString("id"), args.getString("token"), birthDate, expireDate, documentNo, geoLocation, lang, email, phone, name);
       } else if (birthDate != null && expireDate != null && documentNo != null) {
-        Log.d("RNAMANISDK", "email phone name null");
         Amani.goToKycActivity(rnAppContext.getCurrentActivity(), args.getString("id"), args.getString("token"), birthDate, expireDate, documentNo, lang);
       } else {
-        Log.d("RNAMANISDK", "HARDCODED");
         Amani.goToKycActivity(rnAppContext.getCurrentActivity(), args.getString("id"), args.getString("token"), lang);
+      }
+    }
+
+    @ReactMethod
+    public void startAmaniSDKWithCredentials(ReadableMap args, Callback callback) {
+      String birthDate = null;
+      String expireDate = null;
+      String documentNo = null;
+      Boolean geoLocation = false;
+      String lang = null;
+      String email = null;
+      String phone = null;
+      String name = null;
+
+      if (args.hasKey("birthDate")) {
+        birthDate = args.getString("birthDate");
+      }
+      if (args.hasKey("expireDate")) {
+        expireDate = args.getString("expireDate");
+      }
+      if (args.hasKey("documentNo")) {
+        documentNo = args.getString("documentNo");
+      }
+      if (args.hasKey("geoLocation")) {
+        geoLocation = args.getBoolean("geoLocation");
+      } else {
+        geoLocation = false;
+      }
+      if (args.hasKey("lang")) {
+        lang = args.getString("lang");
+      }
+      if (args.hasKey("email")) {
+        email = args.getString("email");
+      }
+      if (args.hasKey("phone")) {
+        phone = args.getString("phone");
+      }
+      if (args.hasKey("name")) {
+        name = args.getString("name");
+      }
+
+
+      Amani.init(rnAppContext, args.getString("server"));
+
+      eventListener(callback);
+      if (email != null && phone != null && name != null) {
+        Amani.goToKycActivity(rnAppContext.getCurrentActivity(), args.getString("id"), args.getString("loginEmail"), args.getString("password"), birthDate, expireDate, documentNo, geoLocation, lang, email, phone, name);
+      } else if (birthDate != null && expireDate != null && documentNo != null) {
+        Amani.goToKycActivity(rnAppContext.getCurrentActivity(), args.getString("id"), args.getString("loginEmail"), args.getString("password"), birthDate, expireDate, documentNo, lang);
+      } else {
+        Amani.goToKycActivity(rnAppContext.getCurrentActivity(), args.getString("id"), args.getString("loginEmail"), args.getString("password"), lang);
       }
     }
 
