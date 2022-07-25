@@ -1,5 +1,5 @@
 import { NativeModules, Platform } from 'react-native';
-import type { SDKActivityResult, StartAmaniSDKWithTokenParams } from './types';
+import type { SDKActivityResult, StartAmaniSDKWithCredentialParams, StartAmaniSDKWithTokenParams } from './types';
 
 const LINKING_ERROR =
   `The package 'RNAmaniSDK' doesn't seem to be linked. Make sure: \n\n` +
@@ -33,3 +33,24 @@ export function startAmaniSDKWithToken(params: StartAmaniSDKWithTokenParams, cal
   params.server = Platform.OS === 'android' ? `${params.server}/api/v1/` : params.server
   RNAmaniSDK.startAmaniSDKWithToken(params, callback)
 }
+
+export function startAmaniSDKWithCredentials(params: StartAmaniSDKWithCredentialParams, callback: (data: SDKActivityResult) => void) {
+  // check for whatever is not optional.
+  if (!params.server) {
+    throw new TypeError("'server is missing or null.'")    
+  }
+  if (!params.loginEmail) {
+    throw new TypeError("'loginEmail' is missing or null.")
+  }
+  if (!params.password) {
+    throw new TypeError("'password' is missing or null.")
+  }
+  if (!params.id) {
+    throw new TypeError("'id' is missing or null.")
+  }
+  // override api url
+  params.server = Platform.OS === 'android' ? `${params.server}/api/v1/` : params.server
+  RNAmaniSDK.startAmaniSDKWithToken(params, callback)
+}
+
+
