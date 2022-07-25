@@ -189,6 +189,8 @@ Installation with yarn
   yarn add https://github.com/AmaniTechnologiesLtd/React_Native_SDK
 ```
 
+For manually adding the sdk to your project, [follow these instructions.](https://github.com/AmaniTechnologiesLtd/React_Native_SDK/blob/main/manually-adding-amani-sdk.md)
+
 # Usage
 
 Import `startAmaniSDKWithToken` from our package as shown below.
