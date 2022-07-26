@@ -66,6 +66,32 @@ dataBinding { enabled true }
 
 Copy `RNAmaniSDKListener.java`, `RNAmaniSDKModule.java` and `RNAmaniSDKPackage.java` from our git repo and change the package names on these files to match your package name on android.
 
+### Adding the RNAmaniSDKPackage to react-native
+To use the module on android you must register the package to the react native host on the java side. You must update `MainApplication.java` file as shown below.
+```java
+   private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
+    @Override
+    public boolean getUseDeveloperSupport() {
+      return BuildConfig.DEBUG;
+    }
+
+    @Override
+    protected List<ReactPackage> getPackages() {
+      @SuppressWarnings("UnnecessaryLocalVariable")
+      List<ReactPackage> packages = new PackageList(this).getPackages();
+      // Packages that cannot be autolinked yet can be added manually here, for example:
+      // YOU MUST ADD THE LINE BELOW
+      packages.add(new RNAmaniSDKPackage());
+      return packages;
+    }
+
+    @Override
+    protected String getJSMainModuleName() {
+      return "index";
+    }
+  };
+```
+
 ## iOS Side
 
 For iOS, you’ll have to do a similar process for adding our SDK.
