@@ -35,6 +35,9 @@ export function startAmaniSDKWithToken(params: StartAmaniSDKWithTokenParams, cal
 }
 
 export function startAmaniSDKWithCredentials(params: StartAmaniSDKWithCredentialParams, callback: (data: SDKActivityResult) => void) {
+  if (!__DEV__) {
+    throw new Error("You can't use `startAmaniSDKWithCredentials` function on production version of your app.")
+  }
   // check for whatever is not optional.
   if (!params.server) {
     throw new TypeError("'server is missing or null.'")    
