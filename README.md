@@ -230,3 +230,23 @@ export interface SDKActivityResult extends Record<string, any> {
 
 It's extended with record for the future updates.
 
+# How to acquire customer token for using this SDK
+1- On the server side, you need to log in with your credentials and get a token for the next steps. This token should be used only on server-side requests not used on Web SDK links.
+```bash
+curl --location --request POST 'https://demo.amani.ai/api/v1/user/login/' \
+
+- -form 'email="user@account.com"' \
+- -form 'password="password"'
+```
+2- Get or Create a customer using the request below. If there is no customer new one is created if there is a customer already created with this ID Card Number it will be returned.
+
+This request will return a customer token that has a short life span and is valid only for this customer. Use this token to initialize Web SDK.
+```
+curl --location --request POST 'https://demo.amani.ai/api/v1/customer' \
+
+- -header 'Authorization: TOKEN use_your_admin_token_here' \
+- -form 'id_card_number="Customer_ID_Card_Number"'\ (Required)
+- -form 'name="Customer Name"' \ (Optional)
+- -form 'email="Customer Email"' \ (Optional)
+- -form 'phone="Customer Phone"' (Optional)
+```
