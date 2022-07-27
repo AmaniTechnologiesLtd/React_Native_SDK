@@ -50,7 +50,7 @@ export function startAmaniSDKWithCredentials(params: StartAmaniSDKWithCredential
   }
   // override api url
   params.server = Platform.OS === 'android' ? `${params.server}/api/v1/` : params.server
-  RNAmaniSDK.startAmaniSDKWithToken(params, callback)
+  RNAmaniSDK.startAmaniSDKWithCredentials(params, callback)
 }
 
 
