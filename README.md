@@ -51,7 +51,9 @@ increase your limit in 48 hours.
 ## General Requirements
 The minimum requirements for the SDK are:  
 * iOS 11.0 and higher  
+* react-native 0.64 or later \*
 
+> For versions below react native 0.64 you must use java (1.8) and you must also link the files maunally. See linked document on [installation](#installation) section below.
 
 ### App permissions
 #### For İOS Devices
