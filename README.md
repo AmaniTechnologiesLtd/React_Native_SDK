@@ -53,7 +53,7 @@ The minimum requirements for the SDK are:
 * iOS 11.0 and higher  
 * react-native 0.64 or later \*
 
-> For versions below react native 0.64 you must use java (1.8) and you must also link the files maunally. See linked document on [installation](#installation) section below.
+> For versions below react native 0.64 you must use java 8 (1.8) and you must also link the files maunally. See linked document on [installation](#installation) section below.
 
 ### App permissions
 #### For İOS Devices
@@ -231,6 +231,35 @@ export interface SDKActivityResult extends Record<string, any> {
 ```
 
 It's extended with record for the future updates.
+
+## Example usage
+In the example useCallback used for reallocating the function for every render. It memoizes the function so only changes when idNumber and customerToken params changes.
+
+```typescript
+import { useCallback, useState } from "react"
+import { startAmaniSDKWithToken } from "amani-react-native-sdk"
+
+const onStartButtonPressed = useCallback(() => {
+    startAmaniSDKWithToken({ server: "https://server.example", id: idNumber, token: customerToken, lang: "tr"}, (data) => {
+      if (data.apiExceptionCode) {
+        // Due to differences in the native SDKs this field always null for iOS
+      }
+      if (data.isTokenExpired) {
+        // CUSTOMER_TOKEN is expired
+      }
+      if (data.isVerificationCompleted) {
+        // User passed all KYC steps, if user used a back button or cancels the progess it will be false.
+      }
+    })
+  }, [idNumber, customerToken]);
+```
+
+Later in that code...
+```jsx
+<Pressable onPress={onStartButtonPressed} style={styles.startButton}>
+  <Text>Start KYC</Text>
+</Pressable>
+```
 
 # How to acquire customer token for using this SDK
 1- On the server side, you need to log in with your credentials and get a token for the next steps. This token should be used only on server-side requests not used on Web SDK links.
