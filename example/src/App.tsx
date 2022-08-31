@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react'; 
-import { StyleSheet, View, Text, TextInput, Pressable, Image, DrawerLayoutAndroid } from 'react-native';
+import { StyleSheet, View, Text, TextInput, Pressable, Image } from 'react-native';
 import { startAmaniSDKWithToken } from 'amani-react-native-sdk';
 
 export default function App() {
