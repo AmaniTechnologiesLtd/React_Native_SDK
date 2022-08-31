@@ -227,6 +227,7 @@ export interface SDKActivityResult extends Record<string, any> {
   isVerificationCompleted?: boolean;
   isTokenExpired?: boolean;
   apiExceptionCode?: number;
+  rules: Record<String, any>;
 }
 ```
 
@@ -238,7 +239,8 @@ In the example useCallback used for reallocating the function for every render. 
 ```typescript
 import { useCallback, useState } from "react"
 import { startAmaniSDKWithToken } from "amani-react-native-sdk"
-
+// Using useCallback to get a memoized function. This isn't required but recommended.
+// See react docs for more information.
 const onStartButtonPressed = useCallback(() => {
     startAmaniSDKWithToken({ server: "https://server.example", id: idNumber, token: customerToken, lang: "tr"}, (data) => {
       if (data.apiExceptionCode) {
@@ -249,6 +251,10 @@ const onStartButtonPressed = useCallback(() => {
       }
       if (data.isVerificationCompleted) {
         // User passed all KYC steps, if user used a back button or cancels the progess it will be false.
+      }
+      if (data.rules) {
+        // User canceled the KYC steps by using back button etc. therefore they have missing steps.
+        // You can get the list of missing steps here.
       }
     })
   }, [idNumber, customerToken]);
