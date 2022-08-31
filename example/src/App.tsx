@@ -1,12 +1,25 @@
 import React, { useCallback, useState } from 'react'; 
-import { StyleSheet, View, Text, TextInput, Pressable, Image } from 'react-native';
+import { StyleSheet, View, Text, TextInput, Pressable, Image, DrawerLayoutAndroid } from 'react-native';
 import { startAmaniSDKWithToken } from 'amani-react-native-sdk';
 
 export default function App() {
   const [idNumber, setIdNumber] = useState("")
   const onStartButtonPressed = useCallback(() => {
-    startAmaniSDKWithToken({ server: "server", id: idNumber, token: "token", lang: "tr"}, (data) => {
-      console.log(data);
+    startAmaniSDKWithToken({ server: "https://amaniserver.amani.ai", id: idNumber, token: "customerToken", lang: "tr"}, (data) => {
+      console.log(data)
+      if (data.apiExceptionCode) {
+        // Due to differences in the native SDKs this field always null for iOS
+      }
+      if (data.isTokenExpired) {
+        // CUSTOMER_TOKEN is expired
+      }
+      if (data.isVerificationCompleted) {
+        // User passed all KYC steps, if user used a back button or cancels the progess it will be false.
+      }
+      if (data.rules) {
+        // User canceled the KYC steps by using back button etc. therefore they have missing steps.
+        // You can get the list of missing steps here.
+      }
     })
   }, [idNumber])
 
@@ -16,9 +29,7 @@ export default function App() {
     <Pressable onPress={onStartButtonPressed} style={[styles.startButton, styles.borders, styles.margin]}>
       <Text style={[styles.textColor]}>START KYC</Text>
     </Pressable>
-
   </View>
-
 }
 
 const styles = StyleSheet.create({
