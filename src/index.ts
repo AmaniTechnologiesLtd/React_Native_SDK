@@ -2,7 +2,7 @@ import { NativeModules, Platform } from 'react-native';
 import type { SDKActivityResult, StartAmaniSDKWithCredentialParams, StartAmaniSDKWithTokenParams } from './types';
 
 const LINKING_ERROR =
-  `The package 'RNAmaniSDK' doesn't seem to be linked. Make sure: \n\n` +
+  `The package 'amani-react-native-sdk' doesn't seem to be linked. Make sure: \n\n` +
   Platform.select({ ios: "- You have run 'pod install'\n", default: '' }) +
   '- You rebuilt the app after installing the package\n' +
   '- You are not using Expo managed workflow\n';
@@ -15,8 +15,6 @@ const RNAmaniSDK = NativeModules.RNAmaniSDK ? NativeModules.RNAmaniSDK: new Prox
         },
       }
     );
-
-
 
 export function startAmaniSDKWithToken(params: StartAmaniSDKWithTokenParams, callback: (data: SDKActivityResult) => void) {
   // check for whatever is not optional.
