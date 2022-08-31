@@ -2,12 +2,14 @@ package com.reactnativeamanisdk;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresPermission;
 
 import com.amani_ai.base.Utiltiy.AppConstants;
 import com.amani_ai.base.util.Amani;
+import com.amani_ai.base.util.SessionManager;
 import com.facebook.react.bridge.ActivityEventListener;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Callback;
@@ -18,6 +20,7 @@ import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.module.annotations.ReactModule;
 
+import java.util.Map;
 import java.util.Objects;
 
 @ReactModule(name = RNAmaniSDKModule.NAME)
@@ -33,12 +36,24 @@ public class RNAmaniSDKModule extends ReactContextBaseJavaModule implements Acti
 
     @Override
     public void onActivityResult(Activity activity, int requestCode, int resultCode, Intent data) {
-      if (RNAmaniSDKListener.listener != null) {
+      if (RNAmaniSDKListener.listener != null && requestCode == 101) {
         WritableMap resultMap = Arguments.createMap();
-        // Maybe expand upon this.
+        // Basic things to check.
         resultMap.putBoolean("isVerificationCompleted", Objects.requireNonNull(data).getBooleanExtra(AppConstants.ON_SUCCESS, false));
         resultMap.putBoolean("isTokenExpired", Objects.requireNonNull(data).getBooleanExtra(AppConstants.TOKEN_EXPIRED, false));
         resultMap.putInt("apiExceptionCode", Objects.requireNonNull(data).getIntExtra(AppConstants.ON_API_EXCEPTION, 1000));
+
+        // Get rules to show
+        Map<String, String> stepList;
+        stepList = SessionManager.getRules(activity);
+
+        WritableMap stepResult = Arguments.createMap();
+        for (Map.Entry<String, String> entry : stepList.entrySet()) {
+          stepResult.putString(entry.getKey(), entry.getValue());
+        }
+
+        resultMap.putMap("rules", stepResult);
+
         RNAmaniSDKListener.listener.onEvent(resultMap);
       }
     }

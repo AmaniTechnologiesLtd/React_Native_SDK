@@ -1,68 +1,9 @@
 import Amani
 
 @objc(RNAmaniSDK)
-class RNAmaniSDK: NSObject, AmaniSDKDelegate {
+class RNAmaniSDK: NSObject {
   
   var currentCallback: RCTResponseSenderBlock?
-  
-  func onKYCSuccess(CustomerId: Int) {
-    if let currentCallback = currentCallback {
-      currentCallback([
-        ["isVerificationCompleted": true]
-      ])
-    }
-  }
-  
-  func onKYCFailed(CustomerId: Int, Rules: [[String : String]]?) {
-    if let currentCallback = currentCallback {
-      currentCallback([
-        [
-          "isVerificationCompleted": false,
-          "customerID": CustomerId,
-          "rules": Rules as Any,
-        ]
-
-      ])
-    }
-  }
-  
-  func onTokenExpired() {
-    if let currentCallback = currentCallback {
-      currentCallback([
-        [
-          "isVerificationCompleted": false,
-          "tokenExpired": true
-        ]
-      ])
-    }
-  }
-  
-  func onNoInternetConnection() {
-    if let currentCallback = currentCallback {
-      currentCallback([
-        [
-          "isVerificationCompleted": false,
-          "tokenExpired": false,
-          "problemName": "You're disconnected from the internet"
-        ]
-      ])
-    }
-  }
-  
-  func onEvent(name: String, Parameters: [String]?, type: String) {
-//    if let currentCallback = currentCallback {
-//      currentCallback([
-//        [
-//          "nativeEvent": [
-//            "name": name,
-//            "parameters": Parameters as Any,
-//            "type": type,
-//          ],
-//        ]
-//      ])
-//    }
-  }
-  
   let nativeSDK = AmaniSDK.sharedInstance
   
   @objc
@@ -102,6 +43,57 @@ class RNAmaniSDK: NSObject, AmaniSDKDelegate {
     }
   }
  
+}
+
+extension RNAmaniSDK: AmaniSDKDelegate {
   
+   func onKYCSuccess(CustomerId: Int) {
+    if let currentCallback = currentCallback {
+      currentCallback([
+        [
+          "isVerificationCompleted": true,
+          "tokenExpired": false,
+        ]
+      ])
+    }
+  }
+  
+  func onKYCFailed(CustomerId: Int, Rules: [[String : String]]?) {
+    if let currentCallback = currentCallback {
+      currentCallback([
+        [
+          "isVerificationCompleted": false,
+          "tokenExpired": false,
+          "rules": Rules as Any
+        ]
+      ])
+    }
+  }
+  
+  func onTokenExpired() {
+    if let currentCallback = currentCallback {
+      currentCallback([
+        [
+          "isVerificationCompleted": false,
+          "tokenExpired": true
+        ]
+      ])
+    }
+  }
+  
+  func onNoInternetConnection() {
+    if let currentCallback = currentCallback {
+      currentCallback([
+        [
+          "isVerificationCompleted": false,
+          "tokenExpired": false,
+        ]
+      ])
+    }
+  }
+ 
+  
+  func onEvent(name: String, Parameters: [String]?, type: String) {
+  }
   
 }
