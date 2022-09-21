@@ -89,7 +89,7 @@ Enable the Near Field Communication Tag Reading capability in the target Signing
 ##### Dependencies:
 1. Add the following dependencies to your Module build.gradle file.
 ```groovy
-implementation 'ai.amani.android:AmaniAi:1.2.51'
+implementation 'ai.amani.android:AmaniAi:1.2.60'
 ```
 2. Enable DataBinding and add packaging options as following in the Module build.gradle by adding this line into code block of android {}:
    

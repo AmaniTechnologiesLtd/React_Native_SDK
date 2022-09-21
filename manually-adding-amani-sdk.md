@@ -9,7 +9,7 @@ Before doing the steps below,
 - Add the following dependencies to your module build.gradle file.
 
 ```groovy
-implementation 'ai.amani.android:AmaniAi:1.2.51'
+implementation 'ai.amani.android:AmaniAi:1.2.60'
 ```
 
 - Enable DataBinding and add packaging options as following in the Module build.gradle by adding this line into code block of android {}:
