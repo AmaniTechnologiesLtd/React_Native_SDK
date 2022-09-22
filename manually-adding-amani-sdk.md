@@ -103,7 +103,7 @@ Since our SDK is a dynamic framework you have to update your `Podfile` for dyn
 First, you must add `use_frameworks!` directive and give our native platform sdk as a source as below.
 
 ```ruby
-source "https://github.com/AmaniTechnologiesLtd/Public-IOS-SDK.git"
+source "https://github.com/AmaniTechnologiesLtd/Mobile_SDK_Repo"
 source "https://github.com/CocoaPods/Specs"
 ```
 
