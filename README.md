@@ -144,7 +144,7 @@ Since our SDK is an dynamic framework you have to update your `Podfile` for dyna
 
 First you must add `use_frameworks!` directive and give our native platform sdk as a source as
 ```rb
-source "https://github.com/AmaniTechnologiesLtd/Public-IOS-SDK.git"
+source "https://github.com/AmaniTechnologiesLtd/Mobile_SDK_Repo”
 source "https://github.com/CocoaPods/Specs"
 ```
 After the last end, you must add our preinstall hook.
