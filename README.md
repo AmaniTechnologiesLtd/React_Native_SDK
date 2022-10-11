@@ -202,22 +202,24 @@ import { startAmaniSDKWithToken } from 'amani-react-native-sdk';
 `startAmaniSDKWithToken` method takes two parameters, first one is the data;
 
 ```typescript
-export interface StartAmaniSDKWithTokenParams {
+// Special type to check if one key is given the rest is must be given.
+type AllOrNothing<T> = T | Partial<Record<keyof T, undefined>>
+
+export type StartAmaniSDKWithTokenParams = {
   server: string;
   id: string;
   token: string;
-  geoLocation?: boolean;
+  geoLocation?: string;
   lang?: string;
-  sharedSecter?: string;
-  // nvi data
-  birthDate?: string;
-  expireDate?: string;
-  documentNo?: string;
-
-  email?: string;
-  phone?: string;
-  name?: string;
-}
+} & AllOrNothing<{
+  birthDate: string;
+  expireDate: string;
+  documentNo: string;
+}> & AllOrNothing<{
+  email: string;
+  phone: string;
+  name: string;
+}>;
 ```
 
 and the second part is callback that returning from our native sdk.
@@ -225,7 +227,6 @@ and the second part is callback that returning from our native sdk.
 export interface SDKActivityResult extends Record<string, any> {
   isVerificationCompleted?: boolean;
   isTokenExpired?: boolean;
-  apiExceptionCode?: number;
   rules: Record<String, any>;
 }
 ```
@@ -242,9 +243,6 @@ import { startAmaniSDKWithToken } from "amani-react-native-sdk"
 // See react docs for more information.
 const onStartButtonPressed = useCallback(() => {
     startAmaniSDKWithToken({ server: "https://server.example", id: idNumber, token: customerToken, lang: "tr"}, (data) => {
-      if (data.apiExceptionCode) {
-        // Due to differences in the native SDKs this field always null for iOS
-      }
       if (data.isTokenExpired) {
         // CUSTOMER_TOKEN is expired
       }
