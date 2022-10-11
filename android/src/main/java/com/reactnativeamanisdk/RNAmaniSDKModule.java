@@ -41,7 +41,6 @@ public class RNAmaniSDKModule extends ReactContextBaseJavaModule implements Acti
         // Basic things to check.
         resultMap.putBoolean("isVerificationCompleted", Objects.requireNonNull(data).getBooleanExtra(AppConstants.ON_SUCCESS, false));
         resultMap.putBoolean("isTokenExpired", Objects.requireNonNull(data).getBooleanExtra(AppConstants.TOKEN_EXPIRED, false));
-        resultMap.putInt("apiExceptionCode", Objects.requireNonNull(data).getIntExtra(AppConstants.ON_API_EXCEPTION, 1000));
 
         // Get rules to show
         Map<String, String> stepList;

@@ -36,6 +36,5 @@ export type StartAmaniSDKWithCredentialParams = {
 export interface SDKActivityResult extends Record<string, any> {
   isVerificationCompleted?: boolean;
   isTokenExpired?: boolean;
-  apiExceptionCode?: number;
   rules: Record<string, any> 
 }
