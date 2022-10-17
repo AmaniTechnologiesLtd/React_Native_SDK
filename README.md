@@ -236,6 +236,8 @@ It's extended with record for the future updates.
 ## Example usage
 In the example useCallback used for reallocating the function for every render. It memoizes the function so only changes when idNumber and customerToken params changes.
 
+> The ID number must be the same on ID number when the customer is created. Otherwise it'll crash the app.
+
 ```typescript
 import { useCallback, useState } from "react"
 import { startAmaniSDKWithToken } from "amani-react-native-sdk"
@@ -274,7 +276,8 @@ curl --location --request POST 'https://demo.amani.ai/api/v1/user/login/' \
 ```
 2- Get or Create a customer using the request below. If there is no customer new one is created if there is a customer already created with this ID Card Number it will be returned.
 
-This request will return a customer token that has a short life span and is valid only for this customer. Use this token to initialize Web SDK.
+This request will return a customer token that has a short life span and is valid only for this customer. Use this token to initialize this SDK. If the ID card numbers doesn't match with the one that you use creating the customer token, the SDK will surely crash the app.
+
 ```
 curl --location --request POST 'https://demo.amani.ai/api/v1/customer' \
 
