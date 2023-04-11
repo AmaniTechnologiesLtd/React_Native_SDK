@@ -125,7 +125,7 @@ repositories {
 dependencies {
     //noinspection GradleDynamicVersion
   implementation "com.facebook.react:react-native:+"
-  implementation "ai.amani.android:AmaniAi:1.2.60"
+  implementation "ai.amani.android:AmaniAi:1.2.75"
 // From node_modules
 }
 
