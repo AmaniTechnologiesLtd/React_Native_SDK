@@ -1,6 +1,6 @@
 {
   "name": "react-native-amanisdk",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "AmaniSDK with UI Bindings for react native",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
@@ -105,7 +105,7 @@
       "tagName": "v${version}"
     },
     "npm": {
-      "publish": false 
+      "publish": false
     },
     "github": {
       "release": true
