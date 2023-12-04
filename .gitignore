@@ -26,6 +26,7 @@ project.xcworkspace
 # Gradle
 android/build/
 example/android/build/
+example/android/app/build/
 android/packages/react-native-gradle-plugin/build/
 android/packages/rn-tester/build
 android/packages/rn-tester/android/app/.cxx/
