@@ -1,6 +1,6 @@
 {
   "name": "react-native-amani-ui",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "AmaniUI bindings for Amani eKYC platform. ",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
