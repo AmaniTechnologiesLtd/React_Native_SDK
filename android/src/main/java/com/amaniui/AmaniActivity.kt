@@ -23,7 +23,7 @@ class AmaniActivity: ReactActivity() {
    /**
     * Returning the activity result to AmaniSDKModule
     */
-   LifeCycleEventListener.lifeCycle!!.activityResult(result)
+   LifeCycleEventListener.lifeCycle?.activityResult(result)
 
    /**
     * Finishing the dummy activity to return main page
@@ -44,6 +44,6 @@ class AmaniActivity: ReactActivity() {
     /**
      * Returning the launcher just before activity created
      */
-    LifeCycleEventListener.lifeCycle!!.onCreate( launcher)
+    LifeCycleEventListener.lifeCycle?.onCreate( launcher)
   }
 }
