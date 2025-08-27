@@ -52,43 +52,35 @@ class AmaniUi: NSObject {
 
 extension AmaniUi: AmaniUIDelegate {
   func onError(type: String, Error: [AmaniSDK.AmaniError]) {
+    let errorStrings = Error.compactMap { $0.error_message }
     
-    let errorStrings = Error.map {
-      if let message = $0.error_message {
-        return $0.error_message
-      }
-      return nil
-    }.filter { $0 != nil}
-    
-    if let currentCallback = currentCallback {
-      currentCallback([[
+    if let callback = currentCallback {
+      currentCallback = nil
+      callback([[
         "errorType": type,
-        "errors": errorStrings as Any
+        "errors": errorStrings
       ]])
     }
   }
   
   func onKYCSuccess(CustomerId: String) {
-    if let currentCallback = currentCallback {
-      currentCallback([
-        [
-          "isVerificationCompleted": true,
-          "tokenExpired": false,
-        ],
-      ])
+    if let callback = currentCallback {
+      currentCallback = nil
+      callback([[
+        "isVerificationCompleted": true,
+        "tokenExpired": false
+      ]])
     }
   }
   
   func onKYCFailed(CustomerId: String, Rules: [[String: String]]?) {
-    if let currentCallback = currentCallback {
-      currentCallback([
-        [
-          "isVerificationCompleted": false,
-          "tokenExpired": false,
-          "rules": Rules as Any,
-        ],
-      ])
+    if let callback = currentCallback {
+      currentCallback = nil
+      callback([[
+        "isVerificationCompleted": false,
+        "tokenExpired": false,
+        "rules": Rules as Any
+      ]])
     }
   }
-  
 }
