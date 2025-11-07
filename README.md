@@ -1,19 +1,21 @@
 # react-native-amani-ui
 
 # Table of Content
+
 - [Overview](#overview)
 - [Basics](#basics)
-    - [General Requirements](#general-requirements)
-    - [Permissions](#permissions)
-    - [Integration](#integration)
+  - [General Requirements](#general-requirements)
+  - [Permissions](#permissions)
+  - [Integration](#integration)
 
 # Overview
 
 The Amani Software Development kit (SDK) provides you complete steps to perform KYC.This sdk consists of 5 steps:
 
-## 1. Upload Your Identification:  
+## 1. Upload Your Identification:
 
 This internally consist of 4 types of documents, you can upload any of them to get your identification verified.THese documets are
+
 1. Turkish ID Card(New): There you can upload your new turkish ID card.
 2. Turkish ID Card(Old): There you can upload your old turkish ID card.
 3. Turkish Driver License: There you can upload your old turkish driver license.
@@ -23,14 +25,14 @@ This internally consist of 4 types of documents, you can upload any of them to g
 
 This steps includes the taking a selfie and uploading it.
 
-
 ## 3. Upload Your Proof of Address:
 
-There we have 4 types of categories you can upload any of them to get your address verified.  
-1. Proof of Address: you will upload simply proof of address there.  
-2. ISKI: you will upload ISKI address proof there.  
-3. IGDAS: There you have the option of IGDAS.  
-4. CK Bogazici Elektrik: You have to upload the same here.  
+There we have 4 types of categories you can upload any of them to get your address verified.
+
+1. Proof of Address: you will upload simply proof of address there.
+2. ISKI: you will upload ISKI address proof there.
+3. IGDAS: There you have the option of IGDAS.
+4. CK Bogazici Elektrik: You have to upload the same here.
 
 ## 4. Sign Digital Contract:
 
@@ -48,12 +50,16 @@ increase your limit in 48 hours.
 # Basics
 
 ## General Requirements
-The minimum requirements for the SDK are:  
-* iOS 13.0 and higher  
-* react-native 0.64 or later 
+
+The minimum requirements for the SDK are:
+
+- iOS 13.0 and higher
+- react-native 0.64 or later
 
 ### App permissions
+
 #### For İOS Devices
+
 Amani SDK makes use of the device Camera, Location and NFC. If you dont want to use location service please provide in init method. You will be required to have the following keys in your application's Info.plist file:
 
 ```xml
@@ -74,22 +80,27 @@ Amani SDK makes use of the device Camera, Location and NFC. If you dont want to 
 	<key>NSCameraUsageDescription</key>
 	<string>This application requires access to your camera for scanning and uploading the document.</string>
 ```
+
 **Note**: All keys will be required for app submission.
 
 ##### Grant accesss to NFC
-Enable the Near Field Communication Tag Reading capability in the target Signing & Capabilities. 
+
+Enable the Near Field Communication Tag Reading capability in the target Signing & Capabilities.
 
 ## Integration
 
 #### For Android Devices
 
 ##### Dependencies:
+
 1. Add the following dependencies to your Module build.gradle file.
+
 ```groovy
 implementation 'ai.amani.android:AmaniAi:1.2.60'
 ```
+
 2. Enable DataBinding and add packaging options as following in the Module build.gradle by adding this line into code block of android {}:
-   
+
 ```groovy
 packagingOptions {
   pickFirst 'lib/x86/libc++_shared.so'
@@ -97,18 +108,20 @@ packagingOptions {
   pickFirst 'lib/armeabi-v7a/libc++_shared.so'
   pickFirst 'lib/arm64-v8a/libc++_shared.so'
 }
-dataBinding { enabled true  } 
+dataBinding { enabled true  }
 ```
+
 3. Add the following in the Project build.gradle within in buildscript within the buildscript->repositories and buildscript->allprojects.
+
 ```groovy
     maven { url "https://jfrog.amani.ai/artifactory/amani-sdk"}
     jcenter()
 ```
 
-##### ProGuard Rule Usage 
+##### ProGuard Rule Usage
 
-* If you are using ProGuard in your application, you just need to add this line into your ProGuard Rules!
-   
+- If you are using ProGuard in your application, you just need to add this line into your ProGuard Rules!
+
 ```java
 -keep class com.amani_ml** {*;}
 -dontwarn com.amani.ml**
@@ -134,12 +147,13 @@ dataBinding { enabled true  }
 -dontwarn org.tensorflow.lite.**
 -keep class org.tensorflow.lite.support**{ *; }
 -dontwarn org.tensorflow.lite.support**
-```   
+```
 
 #### For IOS Devices
-Since our SDK is an dynamic framework you have to update your `Podfile` for dynamic frameworks. 
 
-To avoid build issues, set your iOS version from the podfile 
+Since our SDK is an dynamic framework you have to update your `Podfile` for dynamic frameworks.
+
+To avoid build issues, set your iOS version from the podfile
 
 ```rb
 source "https://github.com/AmaniTechnologiesLtd/Mobile_SDK_Repo”
@@ -147,6 +161,7 @@ source "https://github.com/CocoaPods/Specs"
 ```
 
 You most modify post install block like this.
+
 ```rb
  post_install do |installer|
     # Required for amani-sdk
@@ -183,13 +198,17 @@ You most modify post install block like this.
   end
 end
 ```
+
 # Installation
+
 Installation with yarn
+
 ```
   yarn add https://github.com/AmaniTechnologiesLtd/React_Native_SDK#feat/v3
 ```
 
 ## IMPORTANT AFTER INSTALLATION
+
 Since our native SDK is a dynamic framework, if your react native version is
 0.70 or higher. You must go to the ios directory and run
 
@@ -203,6 +222,7 @@ more build issues and headache.
 # Usage
 
 Import `startAmaniSDKWithToken` from our package as shown below.
+
 ```js
 import { startAmaniSDKWithToken } from 'amani-react-native-sdk';
 ```
@@ -211,7 +231,7 @@ import { startAmaniSDKWithToken } from 'amani-react-native-sdk';
 
 ```typescript
 // Special type to check if one key is given the rest is must be given.
-type AllOrNothing<T> = T | Partial<Record<keyof T, undefined>>
+type AllOrNothing<T> = T | Partial<Record<keyof T, undefined>>;
 
 export type StartAmaniSDKWithTokenParams = {
   server: string;
@@ -223,14 +243,16 @@ export type StartAmaniSDKWithTokenParams = {
   birthDate: string;
   expireDate: string;
   documentNo: string;
-}> & AllOrNothing<{
-  email: string;
-  phone: string;
-  name: string;
-}>;
+}> &
+  AllOrNothing<{
+    email: string;
+    phone: string;
+    name: string;
+  }>;
 ```
 
 and the second part is callback that returning from our native sdk.
+
 ```typescript
 export interface SDKActivityResult extends Record<string, any> {
   isVerificationCompleted?: boolean;
@@ -242,19 +264,21 @@ export interface SDKActivityResult extends Record<string, any> {
 It's extended with record for the future updates.
 
 ## Example usage
+
 In the example useCallback used for reallocating the function for every render. It memoizes the function so only changes when idNumber and customerToken params changes.
 
 > The ID number must be the same on ID number when the customer is created. Otherwise it'll crash the app.
 
 ```typescript
-import { useCallback, useState } from "react"
-import { startAmaniSDKWithToken } from "amani-react-native-sdk"
+import { useCallback, useState } from 'react';
+import { startAmaniSDKWithToken } from 'amani-react-native-sdk';
 // Using useCallback to get a memoized function. This isn't required but recommended.
 // See react docs for more information.
 const onStartButtonPressed = useCallback();
 ```
 
 Later in that code...
+
 ```jsx
 <Pressable onPress={onStartButtonPressed} style={styles.startButton}>
   <Text>Start KYC</Text>
@@ -262,13 +286,16 @@ Later in that code...
 ```
 
 # How to acquire customer token for using this SDK
+
 1- On the server side, you need to log in with your credentials and get a token for the next steps. This token should be used only on server-side requests not used on Web SDK links.
+
 ```bash
 curl --location --request POST 'https://demo.amani.ai/api/v1/user/login/' \
 
 - -form 'email="user@account.com"' \
 - -form 'password="password"'
 ```
+
 2- Get or Create a customer using the request below. If there is no customer new one is created if there is a customer already created with this ID Card Number it will be returned.
 
 This request will return a customer token that has a short life span and is valid only for this customer. Use this token to initialize this SDK. If the ID card numbers doesn't match with the one that you use creating the customer token, the SDK will surely crash the app.

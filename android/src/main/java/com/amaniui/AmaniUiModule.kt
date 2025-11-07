@@ -2,9 +2,11 @@ package com.amaniui
 
 import ai.amani.base.utility.AmaniVersion
 import ai.amani.sdk.extentions.parcelable
+import ai.amani.sdk.model.DynamicFeature
 import ai.amani.sdk.model.KYCResult
 import ai.amani.sdk.utils.AppConstant
 import ai.amani.sdk.utils.ProfileStatus
+import ai.amani.sdk.ui.AmaniSDKUI
 import android.app.Activity
 import android.content.Intent
 import androidx.activity.result.ActivityResult
@@ -20,8 +22,10 @@ import com.facebook.react.bridge.ReadableMap
 
 class AmaniUiModule(reactContext: ReactApplicationContext) :
   ReactContextBaseJavaModule(reactContext) {
+
   private var callback: Callback? = null
   private var launcher: ActivityResultLauncher<Intent>? = null
+
   override fun getName(): String {
     return NAME
   }
@@ -30,8 +34,37 @@ class AmaniUiModule(reactContext: ReactApplicationContext) :
     const val NAME = "AmaniUi"
   }
 
+  // ✅ Helper: Dynamic feature isimlerini listeye çevirir
+  private fun parseEnabledFeatures(args: ReadableMap): List<DynamicFeature> {
+    val defaultFeatures = listOf(
+      DynamicFeature.ID_CAPTURE,
+      DynamicFeature.ID_HOLOGRAM_DETECTION,
+      DynamicFeature.NFC_SCAN,
+      DynamicFeature.SELFIE_AUTO,
+      DynamicFeature.SELFIE_POSE_ESTIMATION
+    )
+
+    if (!args.hasKey("enabledFeatures")) return defaultFeatures
+
+    val featuresArray = args.getArray("enabledFeatures") ?: return defaultFeatures
+    val result = mutableListOf<DynamicFeature>()
+
+    for (i in 0 until featuresArray.size()) {
+      when (featuresArray.getString(i)?.uppercase()) {
+        "ID_CAPTURE" -> result.add(DynamicFeature.ID_CAPTURE)
+        "ID_HOLOGRAM_DETECTION" -> result.add(DynamicFeature.ID_HOLOGRAM_DETECTION)
+        "NFC_SCAN" -> result.add(DynamicFeature.NFC_SCAN)
+        "SELFIE_AUTO" -> result.add(DynamicFeature.SELFIE_AUTO)
+        "SELFIE_POSE_ESTIMATION" -> result.add(DynamicFeature.SELFIE_POSE_ESTIMATION)
+      }
+    }
+
+    return if (result.isNotEmpty()) result else defaultFeatures
+  }
+
   private fun initSDK(args: ReadableMap, callback: Callback, launcher: ActivityResultLauncher<Intent>) {
-    val activity = currentActivity as AppCompatActivity
+    val activity = currentActivity as? AppCompatActivity ?: return
+
     var birthDate: String? = null
     var expireDate: String? = null
     var documentNo: String? = null
@@ -39,84 +72,72 @@ class AmaniUiModule(reactContext: ReactApplicationContext) :
     var email: String? = null
     var phone: String? = null
     var name: String? = null
-    if (args.hasKey("birthDate")) {
-      birthDate = args.getString("birthDate")
-    }
-    if (args.hasKey("expireDate")) {
-      expireDate = args.getString("expireDate")
-    }
-    if (args.hasKey("documentNo")) {
-      documentNo = args.getString("documentNo")
-    }
-    val geoLocation: Boolean = if (args.hasKey("geoLocation")) {
-      args.getBoolean("geoLocation")
-    } else {
-      false
-    }
-    if (args.hasKey("lang")) {
-      lang = args.getString("lang")
-    }
-    if (args.hasKey("email")) {
-      email = args.getString("email")
-    }
-    if (args.hasKey("phone")) {
-      phone = args.getString("phone")
-    }
-    if (args.hasKey("name")) {
-      name = args.getString("name")
-    }
+
+    if (args.hasKey("birthDate")) birthDate = args.getString("birthDate")
+    if (args.hasKey("expireDate")) expireDate = args.getString("expireDate")
+    if (args.hasKey("documentNo")) documentNo = args.getString("documentNo")
+    if (args.hasKey("lang")) lang = args.getString("lang")
+    if (args.hasKey("email")) email = args.getString("email")
+    if (args.hasKey("phone")) phone = args.getString("phone")
+    if (args.hasKey("name")) name = args.getString("name")
+
+    val geoLocation: Boolean = if (args.hasKey("geoLocation")) args.getBoolean("geoLocation") else false
+
     var amaniVersion = AmaniVersion.V2
     if (args.hasKey("apiVersion") && args.getString("apiVersion") == "v1") {
       amaniVersion = AmaniVersion.V1
     }
 
-    AmaniSDKUI.init(
-      applicationContext = activity,
+    // ✅ Yeni configure metodu (dynamic features dahil)
+    AmaniSDKUI.configure(
+      applicationContext = activity.applicationContext,
       serverURL = args.getString("server")!!,
-      amaniVersion = amaniVersion
+      amaniVersion = amaniVersion,
+      enabledFeatures = parseEnabledFeatures(args)
     )
 
     this.callback = callback
-    if (email != null && phone != null && name != null) {
-      AmaniSDKUI.goToKycActivity(
-        activity = activity,
-        resultLauncher = launcher!!,
-        authToken = args.getString("token")!!,
-        language = lang!!,
-        idNumber = args.getString("id")!!,
-        birthDate = null,
-        documentNumber = null,
-        expireDate = null,
-        userEmail = email,
-        userPhoneNumber = phone,
-        userFullName = name,
-        geoLocation = geoLocation,
-      )
-    } else if (birthDate != null && expireDate != null && documentNo != null) {
-      AmaniSDKUI.goToKycActivity(
-        activity = activity,
-        resultLauncher = launcher!!,
-        idNumber = args.getString("id")!!,
-        authToken = args.getString("token")!!,
-        language = lang!!,
-        birthDate = "birthDate",
-        expireDate = "expireDate",
-        documentNumber = "documentNo",
-      )
 
-    } else {
-      AmaniSDKUI.goToKycActivity(
-        activity = activity,
-        resultLauncher = launcher!!,
-        idNumber = args.getString("id")!!,
-        authToken = args.getString("token")!!
-      )
+    when {
+      email != null && phone != null && name != null -> {
+        AmaniSDKUI.goToKycActivity(
+          activity = activity,
+          resultLauncher = launcher,
+          authToken = args.getString("token")!!,
+          language = lang ?: "en",
+          idNumber = args.getString("id")!!,
+          userEmail = email,
+          userPhoneNumber = phone,
+          userFullName = name,
+          geoLocation = geoLocation
+        )
+      }
+      birthDate != null && expireDate != null && documentNo != null -> {
+        AmaniSDKUI.goToKycActivity(
+          activity = activity,
+          resultLauncher = launcher,
+          idNumber = args.getString("id")!!,
+          authToken = args.getString("token")!!,
+          language = lang ?: "en",
+          birthDate = birthDate,
+          expireDate = expireDate,
+          documentNumber = documentNo
+        )
+      }
+      else -> {
+        AmaniSDKUI.goToKycActivity(
+          activity = activity,
+          resultLauncher = launcher,
+          idNumber = args.getString("id")!!,
+          authToken = args.getString("token")!!,
+          language = lang ?: "en"
+        )
+      }
     }
   }
 
   @ReactMethod
   fun startAmaniSDKWithToken(args: ReadableMap, callback: Callback) {
-
     LifeCycleEventListener.addLifeCycleListener(object : LifeCycle {
       override fun onCreate(launcher: ActivityResultLauncher<Intent>) {
         initSDK(args = args, callback = callback, launcher = launcher)
@@ -129,18 +150,15 @@ class AmaniUiModule(reactContext: ReactApplicationContext) :
             val kycResult: KYCResult? = it.parcelable(AppConstant.KYC_RESULT)
             try {
               if (kycResult != null) {
-
                 val resultMap = Arguments.createMap()
                 resultMap.putBoolean(
                   "isVerificationCompleted",
                   kycResult.profileStatus == ProfileStatus.APPROVED
                 )
-
                 resultMap.putBoolean(
                   "isTokenExpired",
                   kycResult.errorCode == 403
                 )
-
                 callback(resultMap)
               }
             } catch (_: Exception) {}
@@ -164,13 +182,11 @@ class AmaniUiModule(reactContext: ReactApplicationContext) :
           val kycResult: KYCResult? = it.parcelable(AppConstant.KYC_RESULT)
           try {
             if (kycResult != null) {
-
               val resultMap = Arguments.createMap()
               resultMap.putBoolean(
                 "isVerificationCompleted",
                 kycResult.profileStatus == ProfileStatus.APPROVED
               )
-
               resultMap.putBoolean(
                 "isTokenExpired",
                 kycResult.errorCode == 403
