@@ -2,11 +2,10 @@ package com.amaniui
 
 import ai.amani.base.utility.AmaniVersion
 import ai.amani.sdk.extentions.parcelable
-import ai.amani.sdk.model.DynamicFeature
+import ai.amani.sdk.DynamicFeature
 import ai.amani.sdk.model.KYCResult
 import ai.amani.sdk.utils.AppConstant
 import ai.amani.sdk.utils.ProfileStatus
-import ai.amani.sdk.ui.AmaniSDKUI
 import android.app.Activity
 import android.content.Intent
 import androidx.activity.result.ActivityResult
