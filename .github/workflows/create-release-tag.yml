@@ -1,4 +1,4 @@
-name: Create Release Tag
+name: Release Version
 
 on:
   workflow_dispatch:
@@ -18,7 +18,7 @@ jobs:
   # TEMPORARY: tags/pushes against whichever branch triggered the run, since
   # main currently has unresolved conflicts. Re-add a main-only guard (see git
   # history) once main is caught up and this should only cut releases from main.
-  tag:
+  Release:
     runs-on: ubuntu-latest
     steps:
       - name: Validate version input
