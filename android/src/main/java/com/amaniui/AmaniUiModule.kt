@@ -31,7 +31,7 @@ class AmaniUiModule(reactContext: ReactApplicationContext) :
   }
 
   private fun initSDK(args: ReadableMap, callback: Callback, launcher: ActivityResultLauncher<Intent>) {
-    val activity = currentActivity as AppCompatActivity
+    val activity = getCurrentActivity() as AppCompatActivity
     var birthDate: String? = null
     var expireDate: String? = null
     var documentNo: String? = null
