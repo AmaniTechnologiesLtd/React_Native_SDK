@@ -78,6 +78,12 @@ node_modules
 .nvm
 package-lock.json
 
+# Yarn (not using Zero-Installs — no .yarnrc.yml enabling it)
+.yarn/cache
+.yarn/install-state.gz
+.yarn/unplugged
+.yarn/build-state.yml
+
 # OS X
 .DS_Store
 

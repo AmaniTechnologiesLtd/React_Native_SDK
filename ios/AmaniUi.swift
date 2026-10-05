@@ -10,7 +10,13 @@ class AmaniUi: NSObject {
   
   @objc
   func startAmaniSDKWithToken(_ params: NSDictionary, callback responseFn: @escaping RCTResponseSenderBlock) {
-    let customer = CustomerRequestModel(name: params["name"] as? String ?? "", email: params["email"] as? String ?? "", phone: params["phone"] as? String ?? "", idCardNumber: params["id"] as! String)
+    // `id` (ID card number) is optional: a flow that already resolved an access token
+    // server-side (e.g. a QR/pid exchange) has no ID card number to supply, and the
+    // native SDK's `set(...)` takes `customer` as `CustomerRequestModel? = nil`.
+    var customer: CustomerRequestModel?
+    if let id = params["id"] as? String, !id.isEmpty {
+      customer = CustomerRequestModel(name: params["name"] as? String ?? "", email: params["email"] as? String ?? "", phone: params["phone"] as? String ?? "", idCardNumber: id)
+    }
     var nvi: NviModel?
     if params["birthDate"] != nil && params["expireDate"] != nil && params["documentNo"] != nil {
       nvi = NviModel(documentNo: params["documentNo"] as! String, dateOfBirth: params["birthDate"] as! String, dateOfExpire: params["expireDate"] as! String)
@@ -22,7 +28,14 @@ class AmaniUi: NSObject {
     if apiParam != nil && apiParam == "v1" {
       apiVersion = .v1
     }
-    
+
+    // Selects the KYC flow's visual design — a separate axis from `apiVersion` (the
+    // backend API version). Defaults to `.v1` to match the native SDK's own default.
+    var uiVersion: UIVersion = .v1
+    if params["uiVersion"] as? String == "v2" {
+      uiVersion = .v2
+    }
+
     nativeSDK.set(
       server: params["server"] as! String,
       token: params["token"] as! String,
@@ -30,7 +43,8 @@ class AmaniUi: NSObject {
       language: params["lang"] as? String ?? "tr",
       nviModel: nvi,
       //      location: params["geolocation"] as? Bool ?? false,
-      apiVersion: apiVersion
+      apiVersion: apiVersion,
+      uiVersion: uiVersion
     )
     
     nativeSDK.setIdVideoRecord(enable: params["idVideoRecord"] as? Bool ?? false)

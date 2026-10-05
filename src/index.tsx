@@ -1,6 +1,8 @@
 import { NativeModules, Platform } from 'react-native';
 import type { SDKActivityResult, StartAmaniSDKWithTokenParams } from './types';
 
+export type { SDKActivityResult, StartAmaniSDKWithTokenParams } from './types';
+
 const LINKING_ERROR =
   `The package 'react-native-amani-ui' doesn't seem to be linked. Make sure: \n\n` +
   Platform.select({ ios: "- You have run 'pod install'\n", default: '' }) +
@@ -29,9 +31,6 @@ export function startAmaniSDKWithToken(
   }
   if (!params.token) {
     throw new TypeError("'token' is missing or null.");
-  }
-  if (!params.id) {
-    throw new TypeError("'id' is missing or null.");
   }
   // override api url
   Amanisdk.startAmaniSDKWithToken(params, callback);
