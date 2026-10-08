@@ -52,6 +52,28 @@ The minimum requirements for the SDK are:
 * iOS 13.0 and higher  
 * react-native 0.64 or later 
 
+### Android 16 KB page size support
+
+Google Play requires new apps/updates targeting Android 15+ (API 35) to support 16 KB memory
+pages, and will block updates that don't from February 1, 2027.
+
+The Amani Android SDK itself (`Android.SDK.UI` / Core SDK, including its native `litert`
+dependency used for on-device face detection) is already built with 16 KB-aligned native
+libraries, and this package is pinned to its latest release. However, **the host app's React
+Native version also has to support it** — React Native only ships 16 KB-aligned native
+libraries (Hermes, JSC, Folly, etc.) starting in **react-native 0.77+**. If your app is on an
+older React Native version, you will still see 16 KB page size warnings/failures regardless of
+this package's version, because the misaligned native libraries come from React Native itself,
+not from this SDK. Upgrade your app's `react-native` to 0.77 or later (latest stable
+recommended) to resolve this.
+
+Your app's Android project also needs:
+
+* Android Gradle Plugin 8.5.1+ (required for Google Play's automatic 16 KB zip-alignment of
+  native libraries at packaging time)
+* compileSdk 36 (required by the Amani Android SDK itself)
+* NDK r27+ if your app compiles any native code of its own
+
 ### App permissions
 #### For İOS Devices
 Amani SDK makes use of the device Camera, Location and NFC. If you dont want to use location service please provide in init method. You will be required to have the following keys in your application's Info.plist file:

@@ -77,6 +77,15 @@ android {
 
   dataBinding { enabled true }
 
+  aaptOptions {
+    noCompress "tflite"
+  }
+
+  // Required by Android.SDK.UI >= 1.2.42 to prevent a META-INF resource conflict.
+  packagingOptions {
+    exclude "META-INF/versions/9/OSGI-INF/MANIFEST.MF"
+  }
+
     defaultConfig {
         applicationId "com.amaniuiexample"
         minSdkVersion rootProject.ext.minSdkVersion
