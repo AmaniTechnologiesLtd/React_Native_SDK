@@ -127,7 +127,8 @@ class AmaniUiModule(reactContext: ReactApplicationContext) :
         activity = activity,
         resultLauncher = launcher!!,
         idNumber = idNumber,
-        authToken = args.getString("token")!!
+        authToken = args.getString("token")!!,
+        language = lang ?: "tr"
       )
     }
   }
