@@ -7,6 +7,11 @@ RCT_EXTERN_METHOD(
                   callback: (RCTResponseSenderBlock)responseFN
                   )
 
+RCT_EXTERN_METHOD(
+                  startAmaniSDKWithCredentials: (NSDictionary)params
+                  callback: (RCTResponseSenderBlock)responseFN
+                  )
+
 + (BOOL)requiresMainQueueSetup
 {
   return YES;
