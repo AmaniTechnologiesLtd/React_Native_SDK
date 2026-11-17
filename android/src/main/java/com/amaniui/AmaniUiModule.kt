@@ -35,7 +35,8 @@ class AmaniUiModule(reactContext: ReactApplicationContext) :
     val array = args.getArray("enabledFeatures") ?: return DynamicFeature.allFeatures
     val features = mutableListOf<DynamicFeature>()
     for (i in 0 until array.size()) {
-      runCatching { DynamicFeature.valueOf(array.getString(i)) }.getOrNull()?.let { features.add(it) }
+      val value = array.getString(i) ?: continue
+      runCatching { DynamicFeature.valueOf(value) }.getOrNull()?.let { features.add(it) }
     }
     return features
   }
