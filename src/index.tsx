@@ -1,14 +1,9 @@
 import { NativeModules, Platform } from 'react-native';
-import type {
-  SDKActivityResult,
-  StartAmaniSDKWithCredentialsParams,
-  StartAmaniSDKWithTokenParams,
-} from './types';
+import type { SDKActivityResult, StartAmaniSDKWithTokenParams } from './types';
 
 export type {
   AmaniDynamicFeature,
   SDKActivityResult,
-  StartAmaniSDKWithCredentialsParams,
   StartAmaniSDKWithTokenParams,
 } from './types';
 
@@ -43,27 +38,4 @@ export function startAmaniSDKWithToken(
   }
   // override api url
   Amanisdk.startAmaniSDKWithToken(params, callback);
-}
-
-// iOS only: the native Android UI SDK has no username/password login entry point, so this
-// throws on Android rather than silently calling a native method that doesn't exist.
-export function startAmaniSDKWithCredentials(
-  params: StartAmaniSDKWithCredentialsParams,
-  callback: (data: SDKActivityResult) => void
-) {
-  if (Platform.OS !== 'ios') {
-    throw new Error(
-      "'startAmaniSDKWithCredentials' is only supported on iOS; the native Android UI SDK has no username/password login flow. Use 'startAmaniSDKWithToken' instead."
-    );
-  }
-  if (!params.server) {
-    throw new TypeError("'server' is missing or null.");
-  }
-  if (!params.userName) {
-    throw new TypeError("'userName' is missing or null.");
-  }
-  if (!params.password) {
-    throw new TypeError("'password' is missing or null.");
-  }
-  Amanisdk.startAmaniSDKWithCredentials(params, callback);
 }

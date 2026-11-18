@@ -61,17 +61,6 @@ export type StartAmaniSDKWithTokenParams = CommonSDKParams & {
   id?: string;
 };
 
-// iOS only: the native UI SDK is the only one of the two with a username/password login
-// overload — the native Android UI SDK's `goToKycActivity` has no equivalent, so calling this
-// on Android throws instead of silently doing nothing.
-export type StartAmaniSDKWithCredentialsParams = CommonSDKParams & {
-  server: string;
-  userName: string;
-  password: string;
-  // ID card number of the customer. Optional, same as `id` on the token flow.
-  id?: string;
-};
-
 export interface SDKActivityResult extends Record<string, any> {
   isVerificationCompleted?: boolean;
   isTokenExpired?: boolean;

@@ -31,38 +31,6 @@ class AmaniUi: NSObject {
     presentSDK()
   }
 
-  @objc
-  func startAmaniSDKWithCredentials(_ params: NSDictionary, callback responseFn: @escaping RCTResponseSenderBlock) {
-    nativeSDK.setDelegate(delegate: self)
-
-    // Unlike the token flow, the native username/password `set(...)` overload requires a
-    // non-optional `customer`, so this always builds one even if `id` wasn't supplied.
-    let customer = CustomerRequestModel(
-      name: params["name"] as? String,
-      email: params["email"] as? String,
-      phone: params["phone"] as? String,
-      idCardNumber: params["id"] as? String ?? ""
-    )
-
-    nativeSDK.set(
-      server: params["server"] as! String,
-      userName: params["userName"] as! String,
-      password: params["password"] as! String,
-      sharedSecret: params["sharedSecret"] as? String,
-      customer: customer,
-      language: params["lang"] as? String ?? "tr",
-      nviModel: nviModel(from: params),
-      country: params["country"] as? String,
-      location: location(from: params),
-      apiVersion: apiVersion(from: params),
-      uiVersion: uiVersion(from: params)
-    )
-
-    applyCaptureConfig(from: params)
-    currentCallback = responseFn
-    presentSDK()
-  }
-
   // `id` (ID card number) is optional: a flow that already resolved an access token
   // server-side (e.g. a QR/pid exchange) has no ID card number to supply, and the
   // native SDK's `set(...)` takes `customer` as `CustomerRequestModel? = nil`.
