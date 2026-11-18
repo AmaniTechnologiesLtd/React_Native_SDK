@@ -1,7 +1,11 @@
 import { NativeModules, Platform } from 'react-native';
 import type { SDKActivityResult, StartAmaniSDKWithTokenParams } from './types';
 
-export type { SDKActivityResult, StartAmaniSDKWithTokenParams } from './types';
+export type {
+  AmaniDynamicFeature,
+  SDKActivityResult,
+  StartAmaniSDKWithTokenParams,
+} from './types';
 
 const LINKING_ERROR =
   `The package 'react-native-amani-ui' doesn't seem to be linked. Make sure: \n\n` +
