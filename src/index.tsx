@@ -28,7 +28,6 @@ export function startAmaniSDKWithToken(
   params: StartAmaniSDKWithTokenParams,
   callback: (data: SDKActivityResult) => void
 ) {
-  console.log(Amanisdk);
   // check for whatever is not optional.
   if (!params.server) {
     throw new TypeError("'server is missing or null.'");

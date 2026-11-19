@@ -130,6 +130,9 @@ class AmaniUiModule(reactContext: ReactApplicationContext) :
             resultMap.putString("profileStatus", kycResult.profileStatus)
             val errorCode = kycResult.errorCode
             if (errorCode != null) resultMap.putInt("errorCode", errorCode) else resultMap.putNull("errorCode")
+            // Same value as `errorCode`, under the name consumers asked for when an Amani
+            // service call (not just the KYC session itself) fails.
+            if (errorCode != null) resultMap.putInt("apiExceptionCode", errorCode) else resultMap.putNull("apiExceptionCode")
             val errorMessage = kycResult.generalException?.message
             if (errorMessage != null) resultMap.putString("errorMessage", errorMessage) else resultMap.putNull("errorMessage")
           } else {
@@ -137,6 +140,7 @@ class AmaniUiModule(reactContext: ReactApplicationContext) :
             resultMap.putBoolean("isTokenExpired", false)
             resultMap.putNull("profileStatus")
             resultMap.putNull("errorCode")
+            resultMap.putNull("apiExceptionCode")
             resultMap.putString("errorMessage", "No KYC result returned by the native SDK")
           }
           callback(resultMap)

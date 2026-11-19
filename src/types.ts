@@ -69,6 +69,9 @@ export interface SDKActivityResult extends Record<string, any> {
   profileStatus?: string | null;
   // Android only today: the native SDK's raw error code, when the session ended in an error.
   errorCode?: number | null;
+  // Android only today: same value as `errorCode`, exposed under this name for an Amani
+  // service-side (not just KYC session) failure.
+  apiExceptionCode?: number | null;
   // Android only today: a human-readable message for the error, when available.
   errorMessage?: string | null;
   rules: Record<string, any>;
